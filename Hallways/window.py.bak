@@ -1,0 +1,53 @@
+import pygame
+
+WHITE = (255,255,255) #color definitions
+BLACK = (0,0,0)
+
+class Icon(pygame.sprite.Sprite):
+    def __init__(self,image,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = x,y
+        
+class Window(object):
+    def __init__(self,width, height, background):    
+        pygame.init()
+        self.screen = pygame.display.set_mode((width,height)) #create the screen (640 wide, 480 tall by default)
+        self.clock = pygame.time.Clock()
+        self.screen.fill((0,0,0))
+        self.background = pygame.image.load(background)
+        #self.icondict = {} #dictionary type?!
+        self.allgroup = pygame.sprite.Group()#holds all the sprites        
+        
+        self.text = pygame.font.Font('freesansbold.ttf',14) #create a text object for displaying text
+    
+    def refresh(self,characters): #redraw all the characters and refresh the screen
+    
+        self.screen.blit(self.background,(0,0))        
+        self.allgroup.clear(self.screen,self.background)
+        self.allgroup.update()
+        self.allgroup.draw(self.screen)
+        
+        for m in characters:
+            if m.rect.collidepoint(pygame.mouse.get_pos()):
+                chartext = "%s: level %d" %(m.name, m.level)
+                charname = self.text.render(chartext,True,WHITE,BLACK) #create text
+                self.screen.blit(charname,(m.locx,m.locy)) #display text at character
+        pygame.display.flip()
+        
+    def loadimages(self,characters):
+        #self.allgroup = pygame.sprite.Group()
+        for m in characters:
+            preimage = pygame.image.load(m.image)
+            newicon = Icon(preimage,m.locx,m.locy)
+            m.sprite = newicon
+            self.allgroup.add(newicon)
+            print newicon
+    
+    def highlight_mob(self,character):
+        charmask = pygame.mask.from_surface(m.sprite)
+        pass
+            
+            
+            

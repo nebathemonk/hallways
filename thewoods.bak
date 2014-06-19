@@ -1,0 +1,25 @@
+import curses
+
+stdscr = curses.initscr() #create a screen
+
+curses.start_color() #start using color for text
+curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE) #create the color pairs
+
+curses.noecho() #takes of echo but allows key input
+curses.cbreak() #enables no need to wait for enter key for input
+stdscr.keypad(1) #adds special keys 
+
+#win = curses.newwin(200,300,20,7) #main window referred to as win
+stdscr.addstr("start:")
+
+while True:
+    event = stdscr.getch()
+    if event == ord("q"): break #wait for input and then close
+    else: stdscr.addstr("Pretty Text", curses.color_pair(1)); stdscr.refresh()
+
+#start exiting
+curses.nocbreak()
+stdscr.keypad(0)
+curses.echo()
+curses.endwin()
+#exit the curses

@@ -1,0 +1,55 @@
+import curses
+import curses.wrapper
+import string
+from mob import *
+
+def main():
+    stdscr = curses.initscr() #create a screen
+
+
+    curses.start_color() #start using color for text
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK) #create the color pairs
+
+    curses.noecho() #takes off echo but allows key input
+    curses.cbreak() #enables no need to wait for enter key for input
+
+    curses.curs_set(0)
+    stdscr.keypad(1) #adds special keys 
+
+    player = MOB() #create a new player
+    player.locx = 2
+    player.locy = 2
+
+#stdscr.addstr("start:")
+#stdscr.move(player.locy,player.locx) #move cursor to  players location
+
+#stdscr.addstr(player.locy,player.locx, player.icon, curses.color_pair(player.color))
+
+    while True:
+        stdscr.move(0,0); stdscr.addstr("Loc:(%d,%d)" %(player.locx,player.locy)) #put players location at top
+        stdscr.move(player.locy,player.locx)
+        stdscr.addch(ord(player.icon), curses.color_pair(player.color))
+        event = stdscr.getkey()
+        if event == "KEY_LEFT":
+            if player.locx == 1: stdscr.refresh()
+            else: player.locx -= 1; stdscr.clear()
+        if event == "KEY_RIGHT":
+            player.locx += 1;
+            stdscr.clear()
+        if event == "KEY_DOWN":
+            player.locy += 1;
+            stdscr.clear()
+        if event == "KEY_UP":
+            if player.locy == 1: stdscr.refresh()
+            else: player.locy -= 1; stdscr.clear()
+        if event == "q":
+            break #wait for input and then close
+        else: stdscr.refresh()
+    
+    
+if __name__ == "__main__":
+    curses.wrapper(main())
+#start exiting
+stdscr.keypad(0); curses.nocbreak();  curses.echo() #undo all the editting so the terminal works right
+curses.endwin()
+#exit the curses

@@ -1,0 +1,11 @@
+import qrtools
+from qrtools import QR
+myCode = QR() #create a QR object to read
+
+print myCode.decode_webcam() #get data from the webcam
+print myCode.data
+print myCode.data_type
+print myCode.data_to_string()
+
+
+#prints out all the information gained from webcam

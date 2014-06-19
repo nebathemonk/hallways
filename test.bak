@@ -1,0 +1,52 @@
+import string, pygame, qrcode
+from PIL import Image #the image handling library
+from qrtools import QR
+import datetime
+
+#import the libraries for string control
+#import the modules for image manipulation and qrcode editing
+
+print ("Welcome, student. Select desired action:\n 1: Create new QR code\n 2: Read a QR code score\n 3: exit")
+choice = 0
+choice = input('')
+while (choice != 3): #wait for the user to want to exit
+
+    if choice == 1: # user wants to create a QR code
+        myname = raw_input("What is your name for QR code?")
+        print("Hello, ",myname," what class are you in?\n")
+        myclass = raw_input()
+        print('Which assignment did you complete?\n')
+        myassignment = raw_input()
+        print("What percentage score did you recieve on",myassignment,"? (use whole numbers only)\n")
+        mygrade = raw_input()
+
+#set up the qrcode settings
+        qr = qrcode.QRCode(version=1,error_correction=qrcode.constants.ERROR_CORRECT_L,box_size=10,border=4)
+        qr.add_data(myclass+myname+myassignment+mygrade) #adds the name to the qrcode data
+
+        qr.make(fit=True)
+        img = qr.make_image()
+        curtime = datetime.datetime.curtime()
+        datetime.time(curtime.hour, curtime.minute, curtime.second)
+        file_name = str(myclass)+myname+str(curtime)+'.png' #create/open the file for the image
+        image_file= open(file_name,"w")
+
+        img.save(image_file)
+        image_file.close() #close the file
+
+#end of QR creation
+    elif choice == 2:
+       print ("Opening webcam for QR input... hit any key when the green box surrounds QRcode")
+       myCode = QR() #create a QR object to read
+
+       print myCode.decode_webcam() #get data from the webcam
+       print myCode.data
+      # print myCode.data_type
+      # print myCode.data_to_string()
+#end of QR code reading
+    else:
+        print ("Please choose 1: create a QR code, 2: Read a QR code, or 3: exit")
+    #remind them what they are supposed to be doing
+    print ("Operation completed.\n")
+    choice = input("1: create QR code\n2: Read QR code\n3: Exit\n...")
+print ("Exiting...") #user hit 3, exit system

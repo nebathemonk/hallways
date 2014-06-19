@@ -1,0 +1,6 @@
+from mob import *
+from skill import *
+from weapon import *
+from package import *
+
+player = player() #create the player

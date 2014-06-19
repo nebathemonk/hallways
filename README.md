@@ -1,4 +1,0 @@
-hallways
-========
-
-Hallways and Gilamonsters
